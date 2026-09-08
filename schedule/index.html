@@ -348,68 +348,68 @@
   .out-state h3 { font-size: 16px; color: var(--text); margin-bottom: 4px; }
   .out-state p { font-size: 13px; }
 
-  /* ========== Table view (rows=weekday, cols=slot) ========== */
+  /* ========== Table view (rows=slot, cols=weekday) ========== */
   .table-card {
     background: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
   }
-  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .table-grid {
     display: grid;
-    grid-template-columns: 60px repeat(7, minmax(74px, 1fr));
-    min-width: 580px;
+    /* 8 列：节次标签 + 周一~周日；不设 min-width，让 grid 在 360px 屏内自动 1fr 收缩 */
+    grid-template-columns: 44px repeat(7, minmax(0, 1fr));
+    width: 100%;
   }
   .t-corner {
     background: #f7f9fc;
     position: sticky; left: 0; top: 0; z-index: 6;
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding: 8px 6px;
+    padding: 6px 4px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: var(--muted); font-size: 11px; font-weight: 600;
+    color: var(--muted); font-size: 10px; font-weight: 600;
   }
-  .t-corner .tc-kicker { font-size: 10px; }
-  .t-corner .tc-name { font-size: 12px; color: var(--text); margin-top: 2px; }
+  .t-corner .tc-kicker { font-size: 9px; }
+  .t-corner .tc-name { font-size: 11px; color: var(--text); margin-top: 1px; }
 
   .slot-head {
     background: #f7f9fc;
     position: sticky; top: 0; z-index: 4;
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding: 8px 4px 6px;
+    padding: 6px 3px 5px;
     text-align: center;
     font-variant-numeric: tabular-nums;
   }
   .slot-head:last-child { border-right: none; }
   .slot-head .sh-seq {
-    width: 22px; height: 22px; line-height: 22px;
+    width: 20px; height: 20px; line-height: 20px;
     border-radius: 50%;
-    font-size: 12px; font-weight: 800;
-    margin: 0 auto 3px;
+    font-size: 11px; font-weight: 800;
+    margin: 0 auto 2px;
   }
   .slot-head.p-morning .sh-seq { background: #e8f0ff; color: #3f6cf0; }
   .slot-head.p-afternoon .sh-seq { background: #fff3e0; color: #e08a00; }
   .slot-head.p-evening .sh-seq { background: #efe9ff; color: #7c3aed; }
-  .slot-head .sh-part { font-size: 10px; color: var(--muted); }
-  .slot-head .sh-period { font-size: 10px; color: var(--muted-2); margin-top: 1px; }
+  .slot-head .sh-part { font-size: 9px; color: var(--muted); }
+  .slot-head .sh-period { font-size: 9px; color: var(--muted-2); margin-top: 1px; }
 
   .day-row-head {
     background: #fafbfd;
     position: sticky; left: 0; z-index: 3;
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding: 8px 4px;
+    padding: 6px 2px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
-  .day-row-head .drh-name { font-size: 13px; font-weight: 700; color: var(--text); }
-  .day-row-head .drh-date { font-size: 10.5px; color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .day-row-head .drh-name { font-size: 12px; font-weight: 700; color: var(--text); }
+  .day-row-head .drh-date { font-size: 9.5px; color: var(--muted); margin-top: 1px; font-variant-numeric: tabular-nums; }
   .day-row-head .drh-today {
-    display: inline-block; margin-top: 4px;
-    font-size: 9.5px; font-weight: 700; color: #fff;
+    display: inline-block; margin-top: 3px;
+    font-size: 9px; font-weight: 700; color: #fff;
     background: linear-gradient(135deg, #f59e0b, #ef4444);
-    padding: 1px 6px; border-radius: 999px;
+    padding: 0 5px; border-radius: 999px; line-height: 1.5;
   }
   .day-row-head.is-today { background: var(--today); }
 
@@ -417,25 +417,27 @@
     background: #fff;
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding: 4px 4px;
-    min-height: 78px;
-    display: flex; flex-direction: column; gap: 3px;
+    padding: 3px 2px;
+    min-height: 70px;
+    display: flex; flex-direction: column; gap: 2px;
+    overflow: hidden;
   }
-  .t-cell:nth-child(8n) { border-right: none; }
+  .t-cell:nth-last-child(-n+7) { border-bottom: none; }  /* 最后一行去掉下边框 */
+  /* 节次标签列(第 1,9,17,25,33,41,49 列)不画右边框已由 .day-row-head 处理 */
 
   .t-course {
     position: relative;
     background: #fff;
     border: 1px solid var(--line-2);
-    border-radius: 6px;
-    padding: 4px 5px 4px 7px;
+    border-radius: 4px;
+    padding: 2px 3px 2px 5px;
     overflow: hidden;
-    line-height: 1.25;
+    line-height: 1.2;
   }
   .t-course::before {
     content: "";
     position: absolute; left: 0; top: 0; bottom: 0;
-    width: 3px;
+    width: 2.5px;
     background: var(--c, #94a3b8);
   }
   .t-course.hidden { display: none; }
@@ -446,26 +448,49 @@
   }
   body.focusing .t-course:not(.focused) { opacity: .22; filter: grayscale(.85); }
   .t-course .tc-name {
-    font-size: 11.5px; font-weight: 700; color: var(--text);
+    font-size: 10.5px; font-weight: 700; color: var(--text);
     word-break: break-all;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    overflow: hidden;
+    line-height: 1.2;
   }
   .t-course .tc-meta {
-    margin-top: 2px;
-    font-size: 9.5px; color: var(--muted);
-    display: flex; align-items: center; gap: 3px;
+    margin-top: 1px;
+    font-size: 8.5px; color: var(--muted);
+    display: flex; align-items: center; gap: 2px;
+    line-height: 1.2;
   }
-  .t-course .tc-meta svg { width: 9px; height: 9px; fill: var(--muted-2); flex: none; }
+  .t-course .tc-meta svg { width: 8px; height: 8px; fill: var(--muted-2); flex: none; }
   .t-course .tc-tag {
     display: inline-block;
-    margin-top: 2px;
-    font-size: 9px; font-weight: 700; color: #fff;
+    margin-top: 1px;
+    font-size: 8.5px; font-weight: 700; color: #fff;
     background: var(--c, #94a3b8);
-    padding: 0 4px; border-radius: 4px;
+    padding: 0 3px; border-radius: 3px;
     align-self: flex-start;
   }
-  .t-cell-empty { font-size: 11px; color: #d0d5dd; text-align: center; padding-top: 6px; }
+  .t-cell-empty { font-size: 10px; color: #d0d5dd; text-align: center; padding-top: 4px; }
+
+  @media (min-width: 720px) {
+    /* 桌面端放宽一些 */
+    .table-grid { grid-template-columns: 60px repeat(7, minmax(0, 1fr)); }
+    .t-corner { padding: 8px 6px; font-size: 11px; }
+    .t-corner .tc-kicker { font-size: 10px; }
+    .t-corner .tc-name { font-size: 12px; }
+    .slot-head { padding: 10px 6px 8px; }
+    .slot-head .sh-seq { width: 24px; height: 24px; line-height: 24px; font-size: 13px; margin-bottom: 3px; }
+    .slot-head .sh-part { font-size: 10px; }
+    .slot-head .sh-period { font-size: 10px; }
+    .day-row-head { padding: 8px 4px; }
+    .day-row-head .drh-name { font-size: 13px; }
+    .day-row-head .drh-date { font-size: 10.5px; }
+    .day-row-head .drh-today { font-size: 9.5px; padding: 1px 6px; margin-top: 4px; }
+    .t-cell { padding: 5px 4px; min-height: 86px; gap: 3px; }
+    .t-course { padding: 4px 5px 4px 7px; border-radius: 6px; }
+    .t-course::before { width: 3px; }
+    .t-course .tc-name { font-size: 12px; }
+    .t-course .tc-meta { font-size: 10px; gap: 3px; }
+    .t-course .tc-meta svg { width: 9px; height: 9px; }
+    .t-course .tc-tag { font-size: 9.5px; padding: 0 4px; border-radius: 4px; }
+  }
 
   /* Animations */
   .day-card { animation: fadeUp .3s ease both; }
@@ -754,31 +779,33 @@ function renderTableView(week) {
       </div>`;
   }
 
-  // 角落单元格
-  let html = '<div class="table-card"><div class="table-scroll"><div class="table-grid">';
-  html += '<div class="t-corner"><div class="tc-kicker">星期 / 节次</div></div>';
+  // 行=节次（一~七），列=星期（周一~周日）
+  // 角落：节次标签；表头：周一~周日（含日期 + 今天标签）
+  let html = '<div class="table-card"><div class="table-grid">';
 
-  // 节次表头（一-七），sticky top
-  SLOTS.forEach(slot => {
-    html += `<div class="slot-head ${slot.pc}">
-      <div class="sh-seq">${esc(slot.seq)}</div>
-      <div class="sh-part">${esc(slot.part)}</div>
-      <div class="sh-period">${esc(slot.period)}</div>
-    </div>`;
-  });
+  // 角落
+  html += '<div class="t-corner"><div class="tc-kicker">节次</div><div class="tc-name">星期</div></div>';
 
-  // 7 行：每周一 ~ 每周日
+  // 表头：周一 ~ 周日
   DAYS.forEach((day, di) => {
     const dateStr = weekDates[di];
     const isToday = (dateStr === today);
-    html += `<div class="day-row-head${isToday ? ' is-today' : ''}">
-      <div class="drh-name">${esc(day)}</div>
-      <div class="drh-date">${fmtMD(dateStr)}</div>
-      ${isToday ? '<div class="drh-today">今天</div>' : ''}
+    html += `<div class="slot-head" style="background:${isToday ? 'var(--today)' : '#f7f9fc'}">
+      <div class="sh-seq" style="background:${isToday ? '#f59e0b' : ''};color:${isToday ? '#fff' : ''}">${di + 1}</div>
+      <div class="sh-part">${esc(day)}</div>
+      <div class="sh-period">${fmtMD(dateStr)}${isToday ? ' · 今天' : ''}</div>
+    </div>`;
+  });
+
+  // 7 行：节次 一 ~ 七
+  SLOTS.forEach((slot, si) => {
+    html += `<div class="day-row-head">
+      <div class="drh-name">${esc(slot.seq)}</div>
+      <div class="drh-date">${esc(slot.part)}</div>
+      <div class="drh-date">${esc(slot.period)}</div>
     </div>`;
 
-    // 7 列：节次 一 ~ 七
-    SLOTS.forEach(slot => {
+    DAYS.forEach((day, di) => {
       const list = COURSES.filter(c => c.day === day && c.slot_seq === slot.seq);
       let cellContent;
       if (list.length === 0) {
@@ -790,7 +817,7 @@ function renderTableView(week) {
     });
   });
 
-  html += '</div></div></div>';
+  html += '</div></div>';
   return html;
 }
 
@@ -861,23 +888,8 @@ $tabBar.addEventListener('click', e => {
   render();
 });
 
-/* Swipe on week-nav buttons to switch week (avoids conflict with table/list horizontal scroll) */
-const $weekCard = document.querySelector('.week-card');
-let navTouchStartX = 0, navTouchStartY = 0, navTouchEndX = 0, navTouchEndY = 0;
-$weekCard.addEventListener('touchstart', e => {
-  navTouchStartX = e.changedTouches[0].screenX;
-  navTouchStartY = e.changedTouches[0].screenY;
-}, { passive: true });
-$weekCard.addEventListener('touchend', e => {
-  navTouchEndX = e.changedTouches[0].screenX;
-  navTouchEndY = e.changedTouches[0].screenY;
-  const dx = navTouchEndX - navTouchStartX;
-  const dy = navTouchEndY - navTouchStartY;
-  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-    if (dx < 0) { selected = dayToStr(toDay(selected) + 7); render(); }
-    else        { selected = dayToStr(toDay(selected) - 7); render(); }
-  }
-}, { passive: true });
+/* Swipe to switch week intentionally disabled — caused accidental week jumps
+   when users tried to horizontally scroll the course table on mobile. */
 
 /* Keyboard nav (desktop) */
 document.addEventListener('keydown', e => {
