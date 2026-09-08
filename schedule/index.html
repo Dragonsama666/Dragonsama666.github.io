@@ -861,26 +861,23 @@ $tabBar.addEventListener('click', e => {
   render();
 });
 
-/* Swipe to switch week on mobile */
-let touchStartX = 0, touchStartY = 0, touchEndX = 0, touchEndY = 0;
-document.addEventListener('touchstart', e => {
-  touchStartX = e.changedTouches[0].screenX;
-  touchStartY = e.changedTouches[0].screenY;
+/* Swipe on week-nav buttons to switch week (avoids conflict with table/list horizontal scroll) */
+const $weekCard = document.querySelector('.week-card');
+let navTouchStartX = 0, navTouchStartY = 0, navTouchEndX = 0, navTouchEndY = 0;
+$weekCard.addEventListener('touchstart', e => {
+  navTouchStartX = e.changedTouches[0].screenX;
+  navTouchStartY = e.changedTouches[0].screenY;
 }, { passive: true });
-document.addEventListener('touchend', e => {
-  touchEndX = e.changedTouches[0].screenX;
-  touchEndY = e.changedTouches[0].screenY;
-  handleSwipe();
-}, { passive: true });
-function handleSwipe() {
-  const dx = touchEndX - touchStartX;
-  const dy = touchEndY - touchStartY;
-  // horizontal swipe threshold > vertical, so we know it's intentional
+$weekCard.addEventListener('touchend', e => {
+  navTouchEndX = e.changedTouches[0].screenX;
+  navTouchEndY = e.changedTouches[0].screenY;
+  const dx = navTouchEndX - navTouchStartX;
+  const dy = navTouchEndY - navTouchStartY;
   if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
     if (dx < 0) { selected = dayToStr(toDay(selected) + 7); render(); }
     else        { selected = dayToStr(toDay(selected) - 7); render(); }
   }
-}
+}, { passive: true });
 
 /* Keyboard nav (desktop) */
 document.addEventListener('keydown', e => {
