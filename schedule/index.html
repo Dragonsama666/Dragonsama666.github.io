@@ -348,66 +348,124 @@
   .out-state h3 { font-size: 16px; color: var(--text); margin-bottom: 4px; }
   .out-state p { font-size: 13px; }
 
-  /* ========== Tablet grid view (bonus) ========== */
-  .grid-view { display: none; }
-  .grid-view.on { display: block; }
-  .list-view.on { display: flex; }
-  .list-view { display: none; flex-direction: column; gap: 12px; }
-  @media (min-width: 720px) {
-    .grid-view { display: none; }
-    .grid-view.on { display: block; }
-    .list-view.on { display: flex; }
-  }
-
-  /* Reuse desktop grid (compact) */
-  .grid-card {
-    background: var(--card); border-radius: var(--radius);
+  /* ========== Table view (rows=weekday, cols=slot) ========== */
+  .table-card {
+    background: var(--card);
+    border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
   }
-  .grid-scroll { overflow-x: auto; }
-  .grid {
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .table-grid {
     display: grid;
-    grid-template-columns: 76px repeat(7, minmax(120px, 1fr));
-    min-width: 980px;
+    grid-template-columns: 60px repeat(7, minmax(74px, 1fr));
+    min-width: 580px;
   }
-  .cell {
+  .t-corner {
+    background: #f7f9fc;
+    position: sticky; left: 0; top: 0; z-index: 6;
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding: 8px 7px;
-    min-height: 76px;
+    padding: 8px 6px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 11px; font-weight: 600;
+  }
+  .t-corner .tc-kicker { font-size: 10px; }
+  .t-corner .tc-name { font-size: 12px; color: var(--text); margin-top: 2px; }
+
+  .slot-head {
+    background: #f7f9fc;
+    position: sticky; top: 0; z-index: 4;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 4px 6px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .slot-head:last-child { border-right: none; }
+  .slot-head .sh-seq {
+    width: 22px; height: 22px; line-height: 22px;
+    border-radius: 50%;
+    font-size: 12px; font-weight: 800;
+    margin: 0 auto 3px;
+  }
+  .slot-head.p-morning .sh-seq { background: #e8f0ff; color: #3f6cf0; }
+  .slot-head.p-afternoon .sh-seq { background: #fff3e0; color: #e08a00; }
+  .slot-head.p-evening .sh-seq { background: #efe9ff; color: #7c3aed; }
+  .slot-head .sh-part { font-size: 10px; color: var(--muted); }
+  .slot-head .sh-period { font-size: 10px; color: var(--muted-2); margin-top: 1px; }
+
+  .day-row-head {
+    background: #fafbfd;
+    position: sticky; left: 0; z-index: 3;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 4px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .day-row-head .drh-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .day-row-head .drh-date { font-size: 10.5px; color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .day-row-head .drh-today {
+    display: inline-block; margin-top: 4px;
+    font-size: 9.5px; font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    padding: 1px 6px; border-radius: 999px;
+  }
+  .day-row-head.is-today { background: var(--today); }
+
+  .t-cell {
     background: #fff;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 4px 4px;
+    min-height: 78px;
+    display: flex; flex-direction: column; gap: 3px;
   }
-  .cell:nth-child(8n) { border-right: none; }
-  .corner {
-    background: #f7f9fc; position: sticky; left: 0; z-index: 5;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: var(--muted); font-size: 12px; font-weight: 600;
+  .t-cell:nth-child(8n) { border-right: none; }
+
+  .t-course {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--line-2);
+    border-radius: 6px;
+    padding: 4px 5px 4px 7px;
+    overflow: hidden;
+    line-height: 1.25;
   }
-  .day-head-cell {
-    background: #f7f9fc; position: sticky; top: 0; z-index: 3;
-    text-align: center; padding: 12px 6px 10px;
+  .t-course::before {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--c, #94a3b8);
   }
-  .day-head-cell .d-name { font-size: 14px; font-weight: 700; }
-  .day-head-cell .d-date { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
-  .day-head-cell .d-badge {
-    display: inline-block; margin-top: 4px; font-size: 10.5px; font-weight: 700;
-    color: #fff; background: #f59e0b; border-radius: 999px; padding: 1px 8px;
+  .t-course.hidden { display: none; }
+  .t-course.inactive { opacity: .42; filter: grayscale(.6); }
+  .t-course.focused {
+    box-shadow: 0 0 0 1.5px var(--c, var(--primary));
+    border-color: transparent;
   }
-  .day-head-cell.is-today { background: var(--today); }
-  .time-cell {
-    background: #fafbfd; position: sticky; left: 0; z-index: 2;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 6px 4px;
+  body.focusing .t-course:not(.focused) { opacity: .22; filter: grayscale(.85); }
+  .t-course .tc-name {
+    font-size: 11.5px; font-weight: 700; color: var(--text);
+    word-break: break-all;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  .time-cell .t-part { font-size: 11px; color: var(--muted); }
-  .time-cell .t-seq {
-    font-size: 17px; font-weight: 800; color: var(--text);
-    width: 30px; height: 30px; line-height: 30px; border-radius: 50%;
-    background: #eef1f7; margin: 3px 0;
+  .t-course .tc-meta {
+    margin-top: 2px;
+    font-size: 9.5px; color: var(--muted);
+    display: flex; align-items: center; gap: 3px;
   }
-  .time-cell .t-period { font-size: 10.5px; color: var(--muted); }
-  .empty-hint { font-size: 11px; color: #c3c9d4; text-align: center; padding-top: 8px; }
+  .t-course .tc-meta svg { width: 9px; height: 9px; fill: var(--muted-2); flex: none; }
+  .t-course .tc-tag {
+    display: inline-block;
+    margin-top: 2px;
+    font-size: 9px; font-weight: 700; color: #fff;
+    background: var(--c, #94a3b8);
+    padding: 0 4px; border-radius: 4px;
+    align-self: flex-start;
+  }
+  .t-cell-empty { font-size: 11px; color: #d0d5dd; text-align: center; padding-top: 6px; }
 
   /* Animations */
   .day-card { animation: fadeUp .3s ease both; }
@@ -462,9 +520,9 @@
 
   <!-- Tab Bar -->
   <div class="tab-bar" id="tabBar">
-    <button class="tab on" data-mode="thisWeek" id="tabThisWeek">本周课程 <span class="badge" id="countThisWeek">0</span></button>
+    <button class="tab on" data-mode="table" id="tabTable">表格 <span class="badge" id="countThisWeek">0</span></button>
+    <button class="tab" data-mode="list" id="tabList">卡片列表</button>
     <button class="tab" data-mode="allWeeks" id="tabAllWeeks">全部周次</button>
-    <button class="tab" data-mode="grid" id="tabGrid" style="display:none">周表视图</button>
   </div>
 
   <!-- Legend (compact) -->
@@ -546,7 +604,7 @@ const COFFEE_SVG = '<svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4
 
 /* ===================== State ===================== */
 let selected = todayStr();
-let viewMode = 'thisWeek';  // 'thisWeek' | 'allWeeks' | 'grid'
+let viewMode = 'table';  // 'table' | 'list' | 'allWeeks'
 let focusCourse = null;
 
 /* ===================== DOM refs ===================== */
@@ -557,9 +615,9 @@ const $weekOut = document.getElementById('weekOut');
 const $countThisWeek = document.getElementById('countThisWeek');
 const $legendBox = document.getElementById('legendBox');
 const $fabToday = document.getElementById('fabToday');
-const $tabThisWeek = document.getElementById('tabThisWeek');
+const $tabTable = document.getElementById('tabTable');
+const $tabList = document.getElementById('tabList');
 const $tabAllWeeks = document.getElementById('tabAllWeeks');
-const $tabGrid = document.getElementById('tabGrid');
 const $tabBar = document.getElementById('tabBar');
 
 /* ===================== Legend ===================== */
@@ -592,7 +650,7 @@ function courseCardHTML(c, week) {
   const cls = ['course'];
   if (active) cls.push('active');
   else cls.push('inactive');
-  if (viewMode === 'thisWeek' && !active) cls.push('hidden');
+  if (viewMode !== 'allWeeks' && !active) cls.push('hidden');
   if (focusCourse === c.name) cls.push('focused');
 
   const iconByPart = { '上午': CAL_SVG, '下午': COFFEE_SVG, '晚上': MOON_SVG }[c.part] || CAL_SVG;
@@ -608,6 +666,22 @@ function courseCardHTML(c, week) {
         <div class="ci">${PIN_SVG}<span>${esc(c.room)}</span></div>
         <div class="ci">${USER_SVG}<span>${esc(c.teacher)}</span></div>
       </div>
+    </div>`;
+}
+
+function tableCourseHTML(c, week) {
+  const active = isActive(c, week);
+  const color = COLOR_MAP[c.name] || '#6b7280';
+  const cls = ['t-course'];
+  if (!active) cls.push('inactive');
+  if (viewMode !== 'allWeeks' && !active) cls.push('hidden');
+  if (focusCourse === c.name) cls.push('focused');
+  return `
+    <div class="${cls.join(' ')}" style="--c:${color}" data-course="${esc(c.name)}">
+      <div class="tc-name">${esc(c.name)}</div>
+      <div class="tc-meta">${PIN_SVG}<span>${esc(c.room)}</span></div>
+      <div class="tc-meta">${USER_SVG}<span>${esc(c.teacher)}</span></div>
+      <div class="tc-tag">${esc(c.weekText)}</div>
     </div>`;
 }
 
@@ -629,7 +703,6 @@ function renderListView(week, isAllWeeks) {
   DAYS.forEach((day, di) => {
     const dateStr = weekDates[di];
     const isToday = (dateStr === today);
-    const isWeekend = (di === 5 || di === 6);
     const list = COURSES.filter(c => c.day === day)
       .sort((a, b) => SLOTS.findIndex(s => s.seq === a.slot_seq) - SLOTS.findIndex(s => s.seq === b.slot_seq));
 
@@ -667,50 +740,63 @@ function renderListView(week, isAllWeeks) {
   return html;
 }
 
-function renderGridView(week) {
+function renderTableView(week) {
   const today = todayStr();
   const weekDates = DAYS.map((_, i) => dayToStr(SEM_START_DAY + (week - 1) * 7 + i));
   const inSem = week >= 1 && week <= TOTAL_WEEKS;
 
-  if (!inSem) return renderListView(week, false);
+  if (!inSem) {
+    return `
+      <div class="out-state">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+        <h3>本周不在学期范围内</h3>
+        <p>学期范围：2026-08-31 至 2027-01-12</p>
+      </div>`;
+  }
 
-  let html = '<div class="grid-card"><div class="grid-scroll"><div class="grid">';
+  // 角落单元格
+  let html = '<div class="table-card"><div class="table-scroll"><div class="table-grid">';
+  html += '<div class="t-corner"><div class="tc-kicker">星期 / 节次</div></div>';
 
-  // corner
-  html += '<div class="cell corner"><div>节次</div><div>时间</div></div>';
-
-  // day headers
-  DAYS.forEach((d, i) => {
-    const isT = (weekDates[i] === today);
-    html += `<div class="cell day-head-cell${isT ? ' is-today' : ''}">
-      <div class="d-name">${esc(d)}</div>
-      <div class="d-date">${fmtMD(weekDates[i])}</div>
-      ${isT ? '<div class="d-badge">今天</div>' : ''}
+  // 节次表头（一-七），sticky top
+  SLOTS.forEach(slot => {
+    html += `<div class="slot-head ${slot.pc}">
+      <div class="sh-seq">${esc(slot.seq)}</div>
+      <div class="sh-part">${esc(slot.part)}</div>
+      <div class="sh-period">${esc(slot.period)}</div>
     </div>`;
   });
 
-  // rows
-  SLOTS.forEach(slot => {
-    html += `<div class="cell time-cell ${slot.pc}">
-      <div class="t-part">${esc(slot.part)}</div>
-      <div class="t-seq">${esc(slot.seq)}</div>
-      <div class="t-period">${esc(slot.period)}</div>
+  // 7 行：每周一 ~ 每周日
+  DAYS.forEach((day, di) => {
+    const dateStr = weekDates[di];
+    const isToday = (dateStr === today);
+    html += `<div class="day-row-head${isToday ? ' is-today' : ''}">
+      <div class="drh-name">${esc(day)}</div>
+      <div class="drh-date">${fmtMD(dateStr)}</div>
+      ${isToday ? '<div class="drh-today">今天</div>' : ''}
     </div>`;
 
-    DAYS.forEach((day, di) => {
+    // 7 列：节次 一 ~ 七
+    SLOTS.forEach(slot => {
       const list = COURSES.filter(c => c.day === day && c.slot_seq === slot.seq);
-      let cellContent = '';
+      let cellContent;
       if (list.length === 0) {
-        cellContent = '<div class="empty-hint">·</div>';
+        cellContent = '<div class="t-cell-empty">·</div>';
       } else {
-        list.forEach(c => { cellContent += courseCardHTML(c, week); });
+        cellContent = list.map(c => tableCourseHTML(c, week)).join('');
       }
-      html += `<div class="cell">${cellContent}</div>`;
+      html += `<div class="t-cell">${cellContent}</div>`;
     });
   });
 
   html += '</div></div></div>';
   return html;
+}
+
+function renderGridView(week) {
+  // 保留为旧版（行=节次，列=星期），但不再被默认调用，留作未来扩展
+  return renderTableView(week);
 }
 
 /* ===================== Main render ===================== */
@@ -726,10 +812,10 @@ function render() {
   $weekOut.style.display = inSem ? 'none' : 'block';
 
   // Update tab states
-  [$tabThisWeek, $tabAllWeeks, $tabGrid].forEach(t => t && t.classList.remove('on'));
-  if (viewMode === 'thisWeek') $tabThisWeek.classList.add('on');
+  [$tabTable, $tabList, $tabAllWeeks].forEach(t => t && t.classList.remove('on'));
+  if (viewMode === 'table') $tabTable.classList.add('on');
+  else if (viewMode === 'list') $tabList.classList.add('on');
   else if (viewMode === 'allWeeks') $tabAllWeeks.classList.add('on');
-  else if (viewMode === 'grid') $tabGrid.classList.add('on');
 
   // Count active courses this week
   const activeCount = COURSES.filter(c => isActive(c, week)).length;
@@ -744,8 +830,8 @@ function render() {
   });
 
   // Render content
-  if (viewMode === 'grid') {
-    $content.innerHTML = renderGridView(week);
+  if (viewMode === 'table') {
+    $content.innerHTML = renderTableView(week);
   } else {
     $content.innerHTML = renderListView(week, viewMode === 'allWeeks');
   }
