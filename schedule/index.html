@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, viewport-fit=cover">
+<meta name="theme-color" content="#4f7cf7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>25环境艺术设计2班 · 课程表</title>
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --text-2: #475569;
+    --muted: #6b7280;
+    --muted-2: #94a3b8;
+    --line: #e6e9ef;
+    --line-2: #eef0f5;
+    --primary: #4f7cf7;
+    --primary-2: #8b5cf6;
+    --primary-soft: #eef2ff;
+    --today: #fff1e0;
+    --shadow-sm: 0 1px 2px rgba(15,23,42,.04), 0 1px 1px rgba(15,23,42,.03);
+    --shadow: 0 2px 8px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+    --shadow-lg: 0 6px 20px rgba(15,23,42,.10);
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-lg: 20px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  button { font-family: inherit; }
+
+  /* ========== Layout ========== */
+  .app {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 14px 96px;
+  }
+  @media (min-width: 720px) {
+    .app { padding: 0 20px 96px; }
+  }
+
+  /* ========== Header ========== */
+  .header {
+    background: linear-gradient(135deg, #4f7cf7 0%, #6a5cf0 55%, #8b5cf6 100%);
+    color: #fff;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: 22px 18px 18px;
+    margin: 0 -14px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 720px) { .header { margin: 0 -20px 18px; padding: 26px 24px 22px; } }
+  .header::after, .header::before {
+    content: ""; position: absolute; border-radius: 50%;
+  }
+  .header::after { right: -60px; top: -60px; width: 220px; height: 220px; background: rgba(255,255,255,.08); }
+  .header::before { right: 60px; bottom: -100px; width: 200px; height: 200px; background: rgba(255,255,255,.06); }
+  .header .h-title { font-size: 20px; font-weight: 700; letter-spacing: .3px; position: relative; }
+  @media (min-width: 720px) { .header .h-title { font-size: 24px; } }
+  .header .h-sub {
+    margin-top: 8px; font-size: 12px; opacity: .92;
+    display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center;
+    position: relative;
+  }
+  .header .h-sub .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22);
+    padding: 3px 9px; border-radius: 999px; font-size: 11.5px;
+  }
+  .header .h-sub .tag svg { width: 12px; height: 12px; fill: #fff; }
+
+  /* ========== Week Navigation Card ========== */
+  .week-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .week-nav {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .week-nav .nav-btn {
+    flex: none;
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--text-2);
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all .15s ease;
+  }
+  .week-nav .nav-btn:hover, .week-nav .nav-btn:active {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-soft);
+  }
+  .week-nav .nav-btn svg { width: 18px; height: 18px; fill: currentColor; }
+  .week-nav .week-display {
+    flex: 1; min-width: 0; text-align: center;
+  }
+  .week-nav .week-num {
+    font-size: 18px; font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: .5px;
+  }
+  .week-nav .week-range {
+    font-size: 12px; color: var(--muted);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .week-nav .week-out {
+    font-size: 11px; color: var(--muted-2); margin-top: 4px;
+  }
+
+  /* ========== Tab Bar ========== */
+  .tab-bar {
+    display: flex; gap: 6px;
+    background: #eef0f5;
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  .tab-bar .tab {
+    flex: 1; border: none; background: transparent;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    padding: 9px 6px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .tab-bar .tab.on {
+    background: #fff; color: var(--text);
+    box-shadow: 0 1px 3px rgba(15,23,42,.08);
+  }
+  .tab-bar .tab .badge {
+    display: inline-block;
+    background: var(--primary); color: #fff;
+    font-size: 10px; padding: 1px 6px; border-radius: 999px;
+    margin-left: 4px; font-weight: 700;
+  }
+
+  /* ========== Day Card ========== */
+  .day-list { display: flex; flex-direction: column; gap: 12px; }
+  .day-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .day-card.is-today {
+    border: 1.5px solid #f59e0b;
+    box-shadow: 0 4px 16px rgba(245,158,11,.15);
+  }
+  .day-head {
+    padding: 12px 14px 8px;
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1px dashed var(--line-2);
+  }
+  .day-head .dh-left { display: flex; align-items: baseline; gap: 8px; }
+  .day-head .dh-name {
+    font-size: 16px; font-weight: 700; color: var(--text);
+  }
+  .day-head .dh-date {
+    font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums;
+  }
+  .day-head .dh-tag {
+    display: inline-block;
+    font-size: 10.5px; font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    padding: 2px 8px; border-radius: 999px;
+  }
+  .day-head .dh-meta {
+    font-size: 11px; color: var(--muted-2);
+  }
+
+  .day-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 8px; }
+
+  /* ========== Course Card ========== */
+  .course {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px 10px 14px;
+    margin-left: 4px;
+    overflow: hidden;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .course::before {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--c, #94a3b8);
+    border-radius: 4px 0 0 4px;
+  }
+  .course:active { transform: scale(.985); }
+  .course.hidden { display: none; }
+  .course.inactive { opacity: .45; filter: grayscale(.6); }
+  .course.focused {
+    box-shadow: 0 0 0 2px var(--c, var(--primary)), var(--shadow);
+    border-color: transparent;
+  }
+  body.focusing .course:not(.focused) { opacity: .25; filter: grayscale(.85); }
+
+  .course .c-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 10px; margin-bottom: 6px;
+  }
+  .course .c-name {
+    font-size: 14.5px; font-weight: 700; color: var(--text);
+    line-height: 1.3; flex: 1;
+  }
+  .course .c-tag {
+    flex: none;
+    font-size: 10.5px; font-weight: 700; color: #fff;
+    background: var(--c, #94a3b8);
+    padding: 2px 7px; border-radius: 999px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .course .c-time {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 600; color: var(--c, #6b7280);
+    margin-bottom: 4px;
+  }
+  .course .c-time .part-pill {
+    font-size: 10px; font-weight: 600;
+    background: rgba(0,0,0,.04);
+    padding: 1px 5px; border-radius: 4px;
+    color: var(--muted);
+    margin-left: 2px;
+  }
+  .course .c-info { display: flex; flex-direction: column; gap: 2px; }
+  .course .ci {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; color: var(--text-2);
+    line-height: 1.4;
+  }
+  .course .ci svg { width: 12px; height: 12px; fill: var(--muted-2); flex: none; }
+  .course .ci b { font-weight: 600; }
+
+  /* Empty day state */
+  .day-empty {
+    padding: 20px 14px 22px;
+    text-align: center;
+    color: var(--muted-2);
+    font-size: 12.5px;
+  }
+  .day-empty .em-icon {
+    width: 32px; height: 32px; margin: 0 auto 8px;
+    border-radius: 50%;
+    background: #f1f3f8;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .day-empty .em-icon svg { width: 16px; height: 16px; fill: var(--muted-2); }
+
+  /* ========== Legend ========== */
+  .legend {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .legend .lg-title {
+    font-size: 12px; color: var(--muted); font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .legend .chips {
+    display: flex; flex-wrap: wrap; gap: 6px 8px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; color: var(--text-2); font-weight: 500;
+    padding: 5px 10px; border-radius: 999px;
+    background: #f4f6fa;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .chip:hover { background: #eceff5; }
+  .chip .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .chip.on { background: #fff; border-color: currentColor; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+
+  /* ========== Footer ========== */
+  .footnote {
+    margin-top: 18px;
+    font-size: 11.5px; color: var(--muted);
+    line-height: 1.7;
+    padding: 12px 14px;
+    background: rgba(255,255,255,.6);
+    border-radius: var(--radius-sm);
+  }
+  .footnote b { color: var(--text-2); }
+  .footnote .info-row {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 4px;
+    font-size: 12px; color: var(--text-2);
+  }
+  .footnote .info-row svg { width: 14px; height: 14px; fill: var(--muted); }
+
+  /* ========== Today FAB ========== */
+  .fab-today {
+    position: fixed;
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-size: 13px; font-weight: 700;
+    box-shadow: var(--shadow-lg);
+    cursor: pointer;
+    display: none;
+    align-items: center; gap: 6px;
+    z-index: 50;
+  }
+  .fab-today.show { display: inline-flex; }
+  .fab-today svg { width: 14px; height: 14px; fill: #fff; }
+
+  /* ========== Empty state (out-of-semester) ========== */
+  .out-state {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 36px 24px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .out-state svg { width: 56px; height: 56px; fill: #cbd5e1; margin-bottom: 12px; }
+  .out-state h3 { font-size: 16px; color: var(--text); margin-bottom: 4px; }
+  .out-state p { font-size: 13px; }
+
+  /* ========== Tablet grid view (bonus) ========== */
+  .grid-view { display: none; }
+  .grid-view.on { display: block; }
+  .list-view.on { display: flex; }
+  .list-view { display: none; flex-direction: column; gap: 12px; }
+  @media (min-width: 720px) {
+    .grid-view { display: none; }
+    .grid-view.on { display: block; }
+    .list-view.on { display: flex; }
+  }
+
+  /* Reuse desktop grid (compact) */
+  .grid-card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .grid-scroll { overflow-x: auto; }
+  .grid {
+    display: grid;
+    grid-template-columns: 76px repeat(7, minmax(120px, 1fr));
+    min-width: 980px;
+  }
+  .cell {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 7px;
+    min-height: 76px;
+    background: #fff;
+  }
+  .cell:nth-child(8n) { border-right: none; }
+  .corner {
+    background: #f7f9fc; position: sticky; left: 0; z-index: 5;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 12px; font-weight: 600;
+  }
+  .day-head-cell {
+    background: #f7f9fc; position: sticky; top: 0; z-index: 3;
+    text-align: center; padding: 12px 6px 10px;
+  }
+  .day-head-cell .d-name { font-size: 14px; font-weight: 700; }
+  .day-head-cell .d-date { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .day-head-cell .d-badge {
+    display: inline-block; margin-top: 4px; font-size: 10.5px; font-weight: 700;
+    color: #fff; background: #f59e0b; border-radius: 999px; padding: 1px 8px;
+  }
+  .day-head-cell.is-today { background: var(--today); }
+  .time-cell {
+    background: #fafbfd; position: sticky; left: 0; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 6px 4px;
+  }
+  .time-cell .t-part { font-size: 11px; color: var(--muted); }
+  .time-cell .t-seq {
+    font-size: 17px; font-weight: 800; color: var(--text);
+    width: 30px; height: 30px; line-height: 30px; border-radius: 50%;
+    background: #eef1f7; margin: 3px 0;
+  }
+  .time-cell .t-period { font-size: 10.5px; color: var(--muted); }
+  .empty-hint { font-size: 11px; color: #c3c9d4; text-align: center; padding-top: 8px; }
+
+  /* Animations */
+  .day-card { animation: fadeUp .3s ease both; }
+  .day-card:nth-child(1) { animation-delay: .02s; }
+  .day-card:nth-child(2) { animation-delay: .06s; }
+  .day-card:nth-child(3) { animation-delay: .10s; }
+  .day-card:nth-child(4) { animation-delay: .14s; }
+  .day-card:nth-child(5) { animation-delay: .18s; }
+  .day-card:nth-child(6) { animation-delay: .22s; }
+  .day-card:nth-child(7) { animation-delay: .26s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* PWA-like standalone: hide some chrome */
+  @media (display-mode: standalone) {
+    body { padding-top: env(safe-area-inset-top); }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="h-title">25环境艺术设计2班 · 课程表</div>
+    <div class="h-sub">
+      <span class="tag"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5z"/></svg>2026-2027学年 第一学期</span>
+      <span class="tag"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>环境艺术设计</span>
+      <span class="tag"><svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>共20周</span>
+    </div>
+  </div>
+
+  <!-- Week Navigation -->
+  <div class="week-card">
+    <div class="week-nav">
+      <button class="nav-btn" id="btnPrev" aria-label="上一周">
+        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <div class="week-display">
+        <div class="week-num" id="weekNum">第 1 周</div>
+        <div class="week-range" id="weekRange">2026.08.31 — 2026.09.06</div>
+        <div class="week-out" id="weekOut" style="display:none">（不在学期范围内）</div>
+      </div>
+      <button class="nav-btn" id="btnNext" aria-label="下一周">
+        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar" id="tabBar">
+    <button class="tab on" data-mode="thisWeek" id="tabThisWeek">本周课程 <span class="badge" id="countThisWeek">0</span></button>
+    <button class="tab" data-mode="allWeeks" id="tabAllWeeks">全部周次</button>
+    <button class="tab" data-mode="grid" id="tabGrid" style="display:none">周表视图</button>
+  </div>
+
+  <!-- Legend (compact) -->
+  <div class="legend">
+    <div class="lg-title">课程图例（点击聚焦）</div>
+    <div class="chips" id="legendBox"></div>
+  </div>
+
+  <!-- Content area -->
+  <div id="content"></div>
+
+  <!-- Footnote -->
+  <div class="footnote">
+    <div class="info-row">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+      学期自 <b>2026-08-31</b>（第1周周一）至 <b>2027-01-12</b>，共 20 周
+    </div>
+    <div>内容顺序为 <b>课程 — 周次 — 地点 — 教师</b>，<b>(单)/(双)</b> 表示单周/双周上课。</div>
+  </div>
+
+</div>
+
+<!-- Today FAB -->
+<button class="fab-today" id="fabToday">
+  <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5z"/></svg>
+  回到今天
+</button>
+
+<script>
+/* ===================== Data ===================== */
+const COURSES = [{"day":"星期二","slot_seq":"一","period":"1-2节","part":"上午","name":"模型制作","jie":"1-2节","weeks":[2,3,4,5,6],"weekText":"2-6周","room":"1101模型实训室","teacher":"黎景洋"},{"day":"星期三","slot_seq":"一","period":"1-2节","part":"上午","name":"AI素养与思维","jie":"1-2节","weeks":[9,10],"weekText":"9-10周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"侯亮"},{"day":"星期四","slot_seq":"一","period":"1-2节","part":"上午","name":"数字空间设计","jie":"1-2节","weeks":[2,3,4,6,7,8,9],"weekText":"2-4周,6-9周","room":"1106BIM实训室（二）","teacher":"方聪"},{"day":"星期五","slot_seq":"一","period":"1-2节","part":"上午","name":"数字空间设计","jie":"1-2节","weeks":[7,8],"weekText":"7-8周","room":"1111室内空间设计实训室（一）","teacher":"方聪"},{"day":"星期五","slot_seq":"一","period":"1-2节","part":"上午","name":"数字空间设计","jie":"1-2节","weeks":[9],"weekText":"9周","room":"1105BIM实训室（一）","teacher":"方聪"},{"day":"星期五","slot_seq":"一","period":"1-2节","part":"上午","name":"数字空间设计","jie":"1-2节","weeks":[10],"weekText":"10周","room":"1105BIM实训室（一）","teacher":"方聪"},{"day":"星期日","slot_seq":"一","period":"1-2节","part":"上午","name":"茶空间设计","jie":"1-2节","weeks":[11,12,13,14,15,16],"weekText":"11-16周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"廖丁漩"},{"day":"星期日","slot_seq":"一","period":"1-2节","part":"上午","name":"茶空间设计","jie":"1-2节","weeks":[17],"weekText":"17周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"廖丁漩"},{"day":"星期二","slot_seq":"二","period":"3-4节","part":"上午","name":"模型制作","jie":"3-4节","weeks":[2,3,4,5,6],"weekText":"2-6周","room":"1101模型实训室","teacher":"黎景洋"},{"day":"星期三","slot_seq":"二","period":"3-4节","part":"上午","name":"AI素养与思维","jie":"3-4节","weeks":[9,10],"weekText":"9-10周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"侯亮"},{"day":"星期四","slot_seq":"二","period":"3-4节","part":"上午","name":"数字空间设计","jie":"3-4节","weeks":[2,3,4,6,7,8,9],"weekText":"2-4周,6-9周","room":"1106BIM实训室（二）","teacher":"方聪"},{"day":"星期五","slot_seq":"二","period":"3-4节","part":"上午","name":"数字空间设计","jie":"3-4节","weeks":[7,8],"weekText":"7-8周","room":"1111室内空间设计实训室（一）","teacher":"方聪"},{"day":"星期五","slot_seq":"二","period":"3-4节","part":"上午","name":"数字空间设计","jie":"3-4节","weeks":[9],"weekText":"9周","room":"1105BIM实训室（一）","teacher":"方聪"},{"day":"星期五","slot_seq":"二","period":"3-4节","part":"上午","name":"数字空间设计","jie":"3-4节","weeks":[10],"weekText":"10周","room":"1105BIM实训室（一）","teacher":"方聪"},{"day":"星期五","slot_seq":"二","period":"3-4节","part":"上午","name":"数字空间设计","jie":"3-4节","weeks":[10],"weekText":"10周","room":"1105BIM实训室（一）","teacher":"方聪"},{"day":"星期五","slot_seq":"二","period":"3-4节","part":"上午","name":"劳动教育","jie":"3-4节","weeks":[1,2,3],"weekText":"1-3周","room":"户外","teacher":"王历"},{"day":"星期五","slot_seq":"二","period":"3-4节","part":"上午","name":"形势与政策","jie":"3-4节","weeks":[12,14,16,15],"weekText":"12-16周(双)","room":"1-102","teacher":"李燕"},{"day":"星期日","slot_seq":"二","period":"3-4节","part":"上午","name":"茶空间设计","jie":"3-4节","weeks":[11,12,13,14,15,16],"weekText":"11-16周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"廖丁漩"},{"day":"星期日","slot_seq":"二","period":"3-4节","part":"上午","name":"茶空间设计","jie":"3-4节","weeks":[17],"weekText":"17周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"廖丁漩"},{"day":"星期二","slot_seq":"四","period":"6-7节","part":"下午","name":"艺术概论","jie":"6-7节","weeks":[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"weekText":"2-18周","room":"2-502","teacher":"莫玉秀"},{"day":"星期二","slot_seq":"四","period":"6-7节","part":"下午","name":"艺术概论","jie":"6-7节","weeks":[19],"weekText":"19周","room":"图信楼A401","teacher":"莫玉秀"},{"day":"星期三","slot_seq":"四","period":"6-7节","part":"下午","name":"模型制作","jie":"6-7节","weeks":[2,3,4,5,6,7,8,9],"weekText":"2-9周","room":"1101模型实训室","teacher":"黎景洋"},{"day":"星期三","slot_seq":"四","period":"6-7节","part":"下午","name":"模型制作","jie":"6-7节","weeks":[10],"weekText":"10周","room":"1101模型实训室","teacher":"黎景洋"},{"day":"星期五","slot_seq":"四","period":"6-7节","part":"下午","name":"数字空间设计","jie":"6-7节","weeks":[1,2,3],"weekText":"1-3周","room":"1105BIM实训室（一）","teacher":"方聪"},{"day":"星期日","slot_seq":"四","period":"6-7节","part":"下午","name":"茶空间设计","jie":"6-7节","weeks":[17],"weekText":"17周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"廖丁漩"},{"day":"星期日","slot_seq":"四","period":"6-7节","part":"下午","name":"茶空间设计","jie":"6-7节","weeks":[11,12,13,14,15,16],"weekText":"11-16周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"廖丁漩"},{"day":"星期二","slot_seq":"五","period":"8-9节","part":"下午","name":"习近平新时代中国特色社会主义思想概论","jie":"8-9节","weeks":[17,18,19],"weekText":"17-19周","room":"3-A601","teacher":"李荣生"},{"day":"星期三","slot_seq":"五","period":"8-9节","part":"下午","name":"模型制作","jie":"8-9节","weeks":[2,3,4,5,6,7,8,9],"weekText":"2-9周","room":"1101模型实训室","teacher":"黎景洋"},{"day":"星期三","slot_seq":"五","period":"8-9节","part":"下午","name":"模型制作","jie":"8-9节","weeks":[10],"weekText":"10周","room":"1101模型实训室","teacher":"黎景洋"},{"day":"星期五","slot_seq":"五","period":"8-9节","part":"下午","name":"数字空间设计","jie":"8-9节","weeks":[1,2,3],"weekText":"1-3周","room":"1105BIM实训室（一）","teacher":"方聪"},{"day":"星期日","slot_seq":"五","period":"8-9节","part":"下午","name":"茶空间设计","jie":"8-9节","weeks":[11,12,13,14,15,16],"weekText":"11-16周","room":"1109农旅规划设计虚拟仿真实训室","teacher":"廖丁漩"},{"day":"星期二","slot_seq":"六","period":"10-11节","part":"晚上","name":"习近平新时代中国特色社会主义思想概论","jie":"10-11节","weeks":[4,5,7,8,9,10,11,12,13,14,15,16],"weekText":"4-5周,7-16周","room":"3-A703","teacher":"李荣生"},{"day":"星期三","slot_seq":"六","period":"10-11节","part":"晚上","name":"环境形态设计","jie":"10-11节","weeks":[6,7,8,9,10,11,12,13,14,15,16,17,18],"weekText":"6-18周","room":"1110景观规划实训室","teacher":"王权国"},{"day":"星期三","slot_seq":"六","period":"10-11节","part":"晚上","name":"环境形态设计","jie":"10-11节","weeks":[19],"weekText":"19周","room":"1110景观规划实训室","teacher":"王权国"},{"day":"星期四","slot_seq":"六","period":"10-11节","part":"晚上","name":"习近平新时代中国特色社会主义思想概论","jie":"10-11节","weeks":[6,7,8,9,10,11,12,14,15],"weekText":"6-12周,14-15周","room":"3-A703","teacher":"李荣生"},{"day":"星期五","slot_seq":"六","period":"10-11节","part":"晚上","name":"职业发展与就业指导","jie":"10-11节","weeks":[7,8,9,10],"weekText":"7-10周","room":"3-A503","teacher":"柳芳"},{"day":"星期三","slot_seq":"七","period":"12-13节","part":"晚上","name":"环境形态设计","jie":"12-13节","weeks":[6,7,8,9,10,11,12,13,14,15,16,17,18],"weekText":"6-18周","room":"1110景观规划实训室","teacher":"王权国"},{"day":"星期五","slot_seq":"七","period":"12-13节","part":"晚上","name":"职业发展与就业指导","jie":"12-13节","weeks":[7,8,9,10],"weekText":"7-10周","room":"3-A503","teacher":"柳芳"}];
+
+const DAYS = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日'];
+const SLOTS = [
+  { seq:'一', period:'1-2节',  part:'上午', pc:'p-morning' },
+  { seq:'二', period:'3-4节',  part:'上午', pc:'p-morning' },
+  { seq:'三', period:'5-6节',  part:'上午', pc:'p-morning' },
+  { seq:'四', period:'6-7节',  part:'下午', pc:'p-afternoon' },
+  { seq:'五', period:'8-9节',  part:'下午', pc:'p-afternoon' },
+  { seq:'六', period:'10-11节', part:'晚上', pc:'p-evening' },
+  { seq:'七', period:'12-13节', part:'晚上', pc:'p-evening' },
+];
+
+const COLOR_MAP = {
+  '模型制作': '#4f7cf7',
+  'AI素养与思维': '#8b5cf6',
+  '数字空间设计': '#0ea5e9',
+  '茶空间设计': '#22c55e',
+  '艺术概论': '#f59e0b',
+  '劳动教育': '#ef4444',
+  '形势与政策': '#d946ef',
+  '习近平新时代中国特色社会主义思想概论': '#e11d48',
+  '环境形态设计': '#14b8a6',
+  '职业发展与就业指导': '#f97316',
+};
+const LEGEND_ORDER = [
+  '模型制作','AI素养与思维','数字空间设计','茶空间设计','艺术概论',
+  '劳动教育','形势与政策','习近平新时代中国特色社会主义思想概论','环境形态设计','职业发展与就业指导'
+];
+
+const SEM_START_DAY = Date.UTC(2026, 7, 31) / 86400000; // 2026-08-31
+const TOTAL_WEEKS = 20;
+
+/* ===================== Utilities ===================== */
+const toDay = s => { const p = s.split('-').map(Number); return Date.UTC(p[0], p[1]-1, p[2]) / 86400000; };
+const dayToStr = d => { const dt = new Date(d * 86400000); return dt.getUTCFullYear() + '-' + String(dt.getUTCMonth()+1).padStart(2,'0') + '-' + String(dt.getUTCDate()).padStart(2,'0'); };
+const weekOf = s => Math.floor((toDay(s) - SEM_START_DAY) / 7) + 1;
+const dowOf = s => { const p = s.split('-').map(Number); return (new Date(Date.UTC(p[0], p[1]-1, p[2])).getUTCDay() + 6) % 7; };
+const todayStr = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+const fmtMD = s => { const p = s.split('-'); return p[1] + '/' + p[2]; };
+const fmtFull = s => s.replace(/-/g, '.');
+const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+const PIN_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>';
+const USER_SVG = '<svg viewBox="0 0 24 24"><path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/></svg>';
+const CAL_SVG = '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5z"/></svg>';
+const MOON_SVG = '<svg viewBox="0 0 24 24"><path d="M9.37 5.93A7.35 7.35 0 0 0 9.1 7.5c0 4.08 3.32 7.4 7.4 7.4.68 0 1.35-.09 1.99-.27A7.014 7.014 0 0 1 12 19c-3.86 0-7-3.14-7-7 0-2.93 1.81-5.45 4.37-6.43z"/></svg>';
+const COFFEE_SVG = '<svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM2 21h20v-2H2v2z"/></svg>';
+
+/* ===================== State ===================== */
+let selected = todayStr();
+let viewMode = 'thisWeek';  // 'thisWeek' | 'allWeeks' | 'grid'
+let focusCourse = null;
+
+/* ===================== DOM refs ===================== */
+const $content = document.getElementById('content');
+const $weekNum = document.getElementById('weekNum');
+const $weekRange = document.getElementById('weekRange');
+const $weekOut = document.getElementById('weekOut');
+const $countThisWeek = document.getElementById('countThisWeek');
+const $legendBox = document.getElementById('legendBox');
+const $fabToday = document.getElementById('fabToday');
+const $tabThisWeek = document.getElementById('tabThisWeek');
+const $tabAllWeeks = document.getElementById('tabAllWeeks');
+const $tabGrid = document.getElementById('tabGrid');
+const $tabBar = document.getElementById('tabBar');
+
+/* ===================== Legend ===================== */
+function buildLegend() {
+  $legendBox.innerHTML = '';
+  LEGEND_ORDER.forEach(name => {
+    if (!COLOR_MAP[name]) return;
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.style.color = COLOR_MAP[name];
+    chip.dataset.course = name;
+    chip.innerHTML = '<span class="dot" style="background:' + COLOR_MAP[name] + '"></span>' + esc(name);
+    chip.onclick = () => {
+      focusCourse = (focusCourse === name) ? null : name;
+      render();
+    };
+    $legendBox.appendChild(chip);
+  });
+}
+
+/* ===================== Renderers ===================== */
+function isActive(c, week) {
+  if (week < 1 || week > TOTAL_WEEKS) return false;
+  return c.weeks.indexOf(week) !== -1;
+}
+
+function courseCardHTML(c, week) {
+  const active = isActive(c, week);
+  const color = COLOR_MAP[c.name] || '#6b7280';
+  const cls = ['course'];
+  if (active) cls.push('active');
+  else cls.push('inactive');
+  if (viewMode === 'thisWeek' && !active) cls.push('hidden');
+  if (focusCourse === c.name) cls.push('focused');
+
+  const iconByPart = { '上午': CAL_SVG, '下午': COFFEE_SVG, '晚上': MOON_SVG }[c.part] || CAL_SVG;
+
+  return `
+    <div class="${cls.join(' ')}" style="--c:${color}" data-course="${esc(c.name)}">
+      <div class="c-top">
+        <div class="c-name">${esc(c.name)}</div>
+        <span class="c-tag">${esc(c.weekText)}</span>
+      </div>
+      <div class="c-time">${iconByPart} ${esc(c.period)}<span class="part-pill">${esc(c.part)}</span></div>
+      <div class="c-info">
+        <div class="ci">${PIN_SVG}<span>${esc(c.room)}</span></div>
+        <div class="ci">${USER_SVG}<span>${esc(c.teacher)}</span></div>
+      </div>
+    </div>`;
+}
+
+function renderListView(week, isAllWeeks) {
+  const today = todayStr();
+  const weekDates = DAYS.map((_, i) => dayToStr(SEM_START_DAY + (week - 1) * 7 + i));
+  const inSem = week >= 1 && week <= TOTAL_WEEKS;
+
+  if (!inSem) {
+    return `
+      <div class="out-state">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+        <h3>本周不在学期范围内</h3>
+        <p>学期范围：2026-08-31 至 2027-01-12</p>
+      </div>`;
+  }
+
+  let html = '<div class="day-list">';
+  DAYS.forEach((day, di) => {
+    const dateStr = weekDates[di];
+    const isToday = (dateStr === today);
+    const isWeekend = (di === 5 || di === 6);
+    const list = COURSES.filter(c => c.day === day)
+      .sort((a, b) => SLOTS.findIndex(s => s.seq === a.slot_seq) - SLOTS.findIndex(s => s.seq === b.slot_seq));
+
+    const activeInWeek = list.filter(c => isActive(c, week)).length;
+    const showEmpty = isAllWeeks ? (activeInWeek === 0 && list.length === 0) : (activeInWeek === 0);
+
+    const dayCardCls = ['day-card'];
+    if (isToday) dayCardCls.push('is-today');
+
+    html += `<div class="${dayCardCls.join(' ')}">`;
+    html += `
+      <div class="day-head">
+        <div class="dh-left">
+          <span class="dh-name">${esc(day)}</span>
+          <span class="dh-date">${fmtMD(dateStr)}</span>
+          ${isToday ? '<span class="dh-tag">今天</span>' : ''}
+        </div>
+        <div class="dh-meta">${activeInWeek > 0 ? activeInWeek + ' 节' : '无课'}</div>
+      </div>`;
+
+    if (showEmpty) {
+      html += `
+        <div class="day-empty">
+          <div class="em-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg></div>
+          <div>本${day === '星期六' || day === '星期日' ? '周末' : '日'}暂无课程</div>
+        </div>`;
+    } else {
+      html += '<div class="day-body">';
+      list.forEach(c => { html += courseCardHTML(c, week); });
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderGridView(week) {
+  const today = todayStr();
+  const weekDates = DAYS.map((_, i) => dayToStr(SEM_START_DAY + (week - 1) * 7 + i));
+  const inSem = week >= 1 && week <= TOTAL_WEEKS;
+
+  if (!inSem) return renderListView(week, false);
+
+  let html = '<div class="grid-card"><div class="grid-scroll"><div class="grid">';
+
+  // corner
+  html += '<div class="cell corner"><div>节次</div><div>时间</div></div>';
+
+  // day headers
+  DAYS.forEach((d, i) => {
+    const isT = (weekDates[i] === today);
+    html += `<div class="cell day-head-cell${isT ? ' is-today' : ''}">
+      <div class="d-name">${esc(d)}</div>
+      <div class="d-date">${fmtMD(weekDates[i])}</div>
+      ${isT ? '<div class="d-badge">今天</div>' : ''}
+    </div>`;
+  });
+
+  // rows
+  SLOTS.forEach(slot => {
+    html += `<div class="cell time-cell ${slot.pc}">
+      <div class="t-part">${esc(slot.part)}</div>
+      <div class="t-seq">${esc(slot.seq)}</div>
+      <div class="t-period">${esc(slot.period)}</div>
+    </div>`;
+
+    DAYS.forEach((day, di) => {
+      const list = COURSES.filter(c => c.day === day && c.slot_seq === slot.seq);
+      let cellContent = '';
+      if (list.length === 0) {
+        cellContent = '<div class="empty-hint">·</div>';
+      } else {
+        list.forEach(c => { cellContent += courseCardHTML(c, week); });
+      }
+      html += `<div class="cell">${cellContent}</div>`;
+    });
+  });
+
+  html += '</div></div></div>';
+  return html;
+}
+
+/* ===================== Main render ===================== */
+function render() {
+  const week = weekOf(selected);
+  const today = todayStr();
+  const inSem = week >= 1 && week <= TOTAL_WEEKS;
+  const weekDates = DAYS.map((_, i) => dayToStr(SEM_START_DAY + (week - 1) * 7 + i));
+
+  // Update week nav
+  $weekNum.textContent = inSem ? ('第 ' + week + ' 周') : '本学期外';
+  $weekRange.textContent = weekDates[0] ? (fmtFull(weekDates[0]) + ' — ' + fmtFull(weekDates[6])) : '';
+  $weekOut.style.display = inSem ? 'none' : 'block';
+
+  // Update tab states
+  [$tabThisWeek, $tabAllWeeks, $tabGrid].forEach(t => t && t.classList.remove('on'));
+  if (viewMode === 'thisWeek') $tabThisWeek.classList.add('on');
+  else if (viewMode === 'allWeeks') $tabAllWeeks.classList.add('on');
+  else if (viewMode === 'grid') $tabGrid.classList.add('on');
+
+  // Count active courses this week
+  const activeCount = COURSES.filter(c => isActive(c, week)).length;
+  $countThisWeek.textContent = activeCount;
+
+  // Body focus class
+  document.body.classList.toggle('focusing', !!focusCourse);
+
+  // Legend chips state
+  Array.prototype.forEach.call($legendBox.children, chip => {
+    chip.classList.toggle('on', chip.dataset.course === focusCourse);
+  });
+
+  // Render content
+  if (viewMode === 'grid') {
+    $content.innerHTML = renderGridView(week);
+  } else {
+    $content.innerHTML = renderListView(week, viewMode === 'allWeeks');
+  }
+
+  // FAB visible if not on current week
+  $fabToday.classList.toggle('show', selected !== today && inSem);
+}
+
+/* ===================== Event bindings ===================== */
+document.getElementById('btnPrev').onclick = () => {
+  selected = dayToStr(toDay(selected) - 7);
+  render();
+};
+document.getElementById('btnNext').onclick = () => {
+  selected = dayToStr(toDay(selected) + 7);
+  render();
+};
+$fabToday.onclick = () => {
+  selected = todayStr();
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+$tabBar.addEventListener('click', e => {
+  const btn = e.target.closest('.tab');
+  if (!btn) return;
+  viewMode = btn.dataset.mode;
+  render();
+});
+
+/* Swipe to switch week on mobile */
+let touchStartX = 0, touchStartY = 0, touchEndX = 0, touchEndY = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+  touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  touchEndY = e.changedTouches[0].screenY;
+  handleSwipe();
+}, { passive: true });
+function handleSwipe() {
+  const dx = touchEndX - touchStartX;
+  const dy = touchEndY - touchStartY;
+  // horizontal swipe threshold > vertical, so we know it's intentional
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    if (dx < 0) { selected = dayToStr(toDay(selected) + 7); render(); }
+    else        { selected = dayToStr(toDay(selected) - 7); render(); }
+  }
+}
+
+/* Keyboard nav (desktop) */
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowLeft')  { selected = dayToStr(toDay(selected) - 7); render(); }
+  if (e.key === 'ArrowRight') { selected = dayToStr(toDay(selected) + 7); render(); }
+  if (e.key === 't' || e.key === 'T') { selected = todayStr(); render(); }
+});
+
+/* Init */
+buildLegend();
+render();
+
+/* Re-render at midnight if user keeps page open */
+setInterval(() => {
+  const now = todayStr();
+  if (now !== selected) { selected = now; render(); }
+}, 60000);
+</script>
+</body>
+</html>
